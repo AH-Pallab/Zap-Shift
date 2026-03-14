@@ -1,0 +1,55 @@
+@import "tailwindcss";
+@plugin "daisyui";
+@import url('https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap');
+
+
+.urbanist {
+    font-family: "Urbanist", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+}
+
+@theme {
+    --color-black-8: #606060;
+    --color-black-12: #1F1F1F;
+    --color-black-4: #F0F0F0;
+    --color-green-8: #8FA748;
+    --color-blue-10: #03373D;
+}
+
+@plugin "daisyui/theme" {
+    name: "light";
+    default: false;
+    prefersdark: false;
+    color-scheme: "light";
+    --color-base-100: oklch(98% 0.003 247.858);
+    --color-base-200: oklch(96% 0.007 247.896);
+    --color-base-300: oklch(92% 0.013 255.508);
+    --color-base-content: oklch(20% 0.042 265.755);
+    --color-primary: #CAEB66;
+    --color-primary-content: oklch(25% 0.092 26.042);
+    --color-secondary: oklch(0% 0 0);
+    --color-secondary-content: oklch(100% 0 0);
+    --color-accent: oklch(90% 0.182 98.111);
+    --color-accent-content: oklch(28% 0.066 53.813);
+    --color-neutral: oklch(20% 0.042 265.755);
+    --color-neutral-content: oklch(98% 0.003 247.858);
+    --color-info: oklch(68% 0.169 237.323);
+    --color-info-content: oklch(97% 0.013 236.62);
+    --color-success: oklch(72% 0.219 149.579);
+    --color-success-content: oklch(98% 0.018 155.826);
+    --color-warning: oklch(76% 0.188 70.08);
+    --color-warning-content: oklch(98% 0.022 95.277);
+    --color-error: oklch(65% 0.241 354.308);
+    --color-error-content: oklch(97% 0.014 343.198);
+    --radius-selector: 0rem;
+    --radius-field: 0.5rem;
+    --radius-box: 0.25rem;
+    --size-selector: 0.25rem;
+    --size-field: 0.25rem;
+    --border: 1.5px;
+    --depth: 1;
+    --noise: 1;
+}
+
