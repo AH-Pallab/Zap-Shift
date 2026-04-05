@@ -1,21 +1,27 @@
 import { FaArrowRight } from "react-icons/fa";
 import { Link, NavLink } from "react-router";
 import logo from "../assets/logo.png";
+import { useContext } from "react";
+import { AuthContext } from "../Providers/AuthProvider";
 
 const Navbar = () => {
+  const { user, logOut } = useContext(AuthContext);
   const list = (
     <>
       <li>
-        <NavLink>Services</NavLink>
+        <NavLink to="/services">Services</NavLink>
       </li>
       <li>
-        <NavLink>Coverage</NavLink>
+        <NavLink to="/send-percel">Send Percel</NavLink>
       </li>
       <li>
-        <NavLink>About Us</NavLink>
+        <NavLink to="/coverage">Coverage</NavLink>
       </li>
       <li>
-        <NavLink>Pricing</NavLink>
+        <NavLink to="/tracking">Tracking</NavLink>
+      </li>
+      <li>
+        <NavLink to="/pricing">Pricing</NavLink>
       </li>
     </>
   );
@@ -46,7 +52,11 @@ const Navbar = () => {
           >
             {list}
             <li>
-              <NavLink to="/signin">Sign in</NavLink>
+              {user ? (
+                <button>Sign Out</button>
+              ) : (
+                <NavLink to="/signin">Sign in</NavLink>
+              )}
             </li>
             <li>
               <NavLink>Be a Rider</NavLink>
@@ -54,20 +64,29 @@ const Navbar = () => {
           </ul>
         </div>
         {/* LOGO */}
-        <div className="hidden lg:block relative">
+        <Link to="/" className="hidden lg:block relative">
           <img src={logo} alt="" className="h-10" />
           <h3 className="text-black-12 font-extrabold text-2xl absolute left-4 top-[15px]">
             ZapShift
           </h3>
-        </div>
+        </Link>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1 text-black-8">{list}</ul>
       </div>
       <div className="navbar-end space-x-2 hidden sm:flex ">
-        <Link to="signin" className="btn text-black-8 font-bold bg-white">
-          Sign In
-        </Link>
+        {user ? (
+          <button
+            onClick={logOut}
+            className="btn text-black-8 font-bold bg-white"
+          >
+            Sign Out
+          </button>
+        ) : (
+          <Link to="/signin" className="btn text-black-8 font-bold bg-white">
+            Sign In
+          </Link>
+        )}
         <Link className="btn text-black-12 bg-primary border-none">
           Be a rider
         </Link>

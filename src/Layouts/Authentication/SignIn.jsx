@@ -1,12 +1,32 @@
+import { useContext } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
+import { AuthContext } from "../../Providers/AuthProvider";
 const SignIn = () => {
+  const { googleLogin, signIn } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const location = useLocation();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => {
+    signIn(data.email,data.password)
+    .then(result=>{
+      navigate(location?.state || '/');
+      console.log(result); 
+    })
+    .then(error=>console.log(error))
+  }
+  const handleGoogleLogin = () => {
+    googleLogin()
+      .then((result) => {
+        navigate(location?.state || "/");
+        console.log(result);
+      })
+      .then((error) => console.log(error));
+  }
 
   return (
     <div className="min-w-[350px] mx-auto">
@@ -54,7 +74,10 @@ const SignIn = () => {
         </Link>{" "}
       </p>
       <div className="divider px-6 text-sm text-gray-500">or</div>
-      <button className="btn ml-6  text-black border-none w-[312px] mx-auto">
+      <button
+        onClick={handleGoogleLogin}
+        className="btn ml-6  text-black border-none w-[312px] mx-auto"
+      >
         <svg
           aria-label="Google logo"
           width="16"

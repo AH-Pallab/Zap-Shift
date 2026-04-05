@@ -1,9 +1,12 @@
-import { createBrowserRouter } from "react-router";
 import Home from "../Pages/Home/Home";
 import RootLayout from "../Layouts/RootLayout";
 import SignIn from "../Layouts/Authentication/SignIn";
 import AuthLayout from "../Layouts/Authentication/AuthLayout";
 import Register from "../Layouts/Authentication/Register";
+import Coverage from "../Pages/Coverage/Coverage";
+import PrivateRoute from "./PrivateRoutes";
+import { createBrowserRouter } from "react-router";
+import SendPercel from "../Pages/SendPercel/SendPercel";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -13,6 +16,14 @@ export const router = createBrowserRouter([
         path: "/",
         element: <Home></Home>,
       },
+      {
+        path: "/coverage",
+        element: <Coverage></Coverage>
+      },
+      {
+        path: "/send-percel",
+        element: <PrivateRoute><SendPercel></SendPercel></PrivateRoute>
+      }
     ],
   },
   {

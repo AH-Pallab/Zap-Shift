@@ -1,10 +1,11 @@
 import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { AuthContext } from "../../Providers/AuthProvider";
 
 const Register = () => {
-  const { createUser } = useContext(AuthContext);
+  const { createUser, googleLogin } = useContext(AuthContext);
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -14,7 +15,7 @@ const Register = () => {
   const onSubmit = (data) => {
     createUser(data.email, data.password)
       .then((userCredential) => {
-        // Signed up
+        navigate("/");
         const user = userCredential.user;
         console.log(user);
       })
@@ -81,7 +82,10 @@ const Register = () => {
         </Link>{" "}
       </p>
       <div className="divider px-6 text-sm text-gray-500">or</div>
-      <button className="btn ml-6  text-black border-none w-[312px] mx-auto">
+      <button
+        onClick={googleLogin}
+        className="btn ml-6  text-black border-none w-[312px] mx-auto"
+      >
         <svg
           aria-label="Google logo"
           width="16"
