@@ -1,9 +1,14 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
+import { useContext } from "react";
+import { AuthContext } from "../../Providers/AuthProvider";
+import { useNavigate } from "react-router";
 
 const SendParce = () => {
   const [division, setDivision] = useState([]);
   const [warehouse, setWarehouse] = useState([]);
+  const navigate = useNavigate();
   useEffect(() => {
     fetch("/division.json")
       .then((res) => res.json())
@@ -22,9 +27,35 @@ const SendParce = () => {
     watch,
     formState: { errors },
   } = useForm();
+  const axiosSecure = useAxiosSecure();
+  const {user} = useContext(AuthContext);
 
   const onSubmit = (data) => {
-    console.log(data);
+    const isDocument = data.type === "document";
+    const isSameDistrict = data.senderDistrict === data.receiverDistrict;
+    const parcelWeight = parseFloat(data.parcelWeight);
+
+    let cost = 0;
+    if (isDocument) {
+      cost = isSameDistrict ? 60 : 80;
+    } else {
+      if (parcelWeight < 3) {
+        cost = isSameDistrict ? 110 : 150;
+      } else {
+        const minCharge = isSameDistrict ? 110 : 150;
+        const extraWeight = parcelWeight - 3;
+        const extraCharge = isSameDistrict
+          ? extraWeight * 40
+          : extraWeight * 40 + 40;
+        cost = minCharge + extraCharge;
+      }
+    }
+    data.cost = cost;
+    //send info to database
+    axiosSecure.post("/parcels", data).then((res) => {
+      console.log("after saving", res.data);
+      navigate("/dashboard/my-parcels");
+    });
   };
 
   const senderDivision = watch("senderDivision");
@@ -37,7 +68,6 @@ const SendParce = () => {
     const districts = districtsWithOtherInfo.map((a) => a.district);
     return districts;
   };
-  console.log(districtByDivision(receiverDivision));
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -100,6 +130,7 @@ const SendParce = () => {
             <label className="text-sm font-medium">Parcel Weight (KG)</label>
             <input
               type="number"
+              step="any"
               placeholder="Parcel Weight (KG)"
               {...register("parcelWeight", {
                 required: "Weight is required",
@@ -130,6 +161,7 @@ const SendParce = () => {
                   required: "Sender name is required",
                 })}
                 className="input input-bordered w-full"
+                defaultValue={user?.displayName}
               />
               {errors.senderName && (
                 <p className="text-red-500 text-sm">
